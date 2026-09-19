@@ -1,0 +1,11 @@
+body{font-family: Arial; background:#f0f2f5; display:flex; justify-content:center; padding:30px;}
+.container{background:white; padding:25px; border-radius:15px; width:100%; max-width:450px; box-shadow:0 5px 20px rgba(0,0,0,0.1); text-align:center;}
+h1{color:#333;}
+.search-box{display:flex; gap:10px; margin:20px 0;}
+input{flex:1; padding:12px; border:1px solid #ccc; border-radius:8px;}
+button{padding:12px 20px; background:#4CAF50; color:white; border:none; border-radius:8px; cursor:pointer;}
+button:hover{background:#45a049;}
+#result{margin-top:20px; text-align:left;}
+.flag{width:100%; border-radius:10px; margin-bottom:15px; border:1px solid #eee;}
+.card p{margin:8px 0; font-size:16px;}
+.card strong{color:#555;}
