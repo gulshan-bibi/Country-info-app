@@ -12,7 +12,8 @@ async function getCountry(){
     resultDiv.innerHTML = "<p>Loading...</p>";
 
     try{
-        let res = await fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=false`);
+        // Naya fix API link
+        let res = await fetch(`https://restcountries.com/v3.1/name/${countryName}`);
         if(!res.ok) throw new Error("Country not found");
         let data = await res.json();
         let country = data[0];
@@ -33,5 +34,6 @@ async function getCountry(){
         `;
     } catch(err){
         resultDiv.innerHTML = `<p style="color:red;">Country not found! Try correct spelling.</p>`;
+        console.log(err);
     }
 }
