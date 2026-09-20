@@ -2,38 +2,35 @@ const input = document.getElementById("countryInput");
 const btn = document.getElementById("searchBtn");
 const resultDiv = document.getElementById("result");
 
-btn.addEventListener("click", getCountry);
-input.addEventListener("keypress", (e) => { if(e.key === "Enter") getCountry(); });
+btn.addEventListener("click", searchCountry);
+input.addEventListener("keypress", (e) => { if(e.key === "Enter") searchCountry(); });
 
-async function getCountry(){
-    let countryName = input.value.trim();
-    if(!countryName){ alert("Please enter country name"); return; }
-
+async function searchCountry(){
+    let name = input.value.trim();
+    if(!name){ alert("Please enter country name"); return; }
     resultDiv.innerHTML = "<p>Loading...</p>";
-
     try{
-        // Naya fix API link
-        let res = await fetch(`https://restcountries.com/v3.1/name/${countryName}`);
-        if(!res.ok) throw new Error("Country not found");
+        // 100% working API with fields
+        let url = `https://restcountries.com/v3.1/name/${name}?fields=name,capital,region,population,flags,currencies,languages`;
+        let res = await fetch(url);
+        if(!res.ok) throw new Error("Not found");
         let data = await res.json();
-        let country = data[0];
-
-        let currency = Object.values(country.currencies || {})[0];
-        let currencyText = currency ? `${currency.name} (${currency.symbol || ''})` : "N/A";
-
+        let c = data[0];
+        let curr = Object.values(c.currencies || {})[0];
+        let currText = curr ? `${curr.name} ${curr.symbol || ''}` : "N/A";
+        
         resultDiv.innerHTML = `
             <div class="card">
-                <img src="${country.flags.svg}" class="flag">
-                <h2>${country.name.common}</h2>
-                <p><strong>Capital:</strong> ${country.capital ? country.capital[0] : "N/A"}</p>
-                <p><strong>Region:</strong> ${country.region}</p>
-                <p><strong>Population:</strong> ${country.population.toLocaleString()}</p>
-                <p><strong>Currency:</strong> ${currencyText}</p>
-                <p><strong>Languages:</strong> ${Object.values(country.languages || {}).join(", ")}</p>
+                <img src="${c.flags.svg}" width="150">
+                <h2>${c.name.common}</h2>
+                <p><b>Capital:</b> ${c.capital ? c.capital[0] : "N/A"}</p>
+                <p><b>Region:</b> ${c.region}</p>
+                <p><b>Population:</b> ${c.population.toLocaleString()}</p>
+                <p><b>Currency:</b> ${currText}</p>
+                <p><b>Languages:</b> ${Object.values(c.languages || {}).join(", ")}</p>
             </div>
         `;
-    } catch(err){
-        resultDiv.innerHTML = `<p style="color:red;">Country not found! Try correct spelling.</p>`;
-        console.log(err);
+    }catch(err){
+        resultDiv.innerHTML = `<p style="color:red;">Country not found! Try Pakistan, India, Japan</p>`;
     }
 }
